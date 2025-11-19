@@ -1,64 +1,95 @@
-// Dynamic greeting + footer year
-(function () {
-    const now = new Date();
-    const hour = now.getHours();
-    let greeting = "Welcome";
+// js/validate.js
 
-    if (hour < 12) greeting = "Good morning";
-    else if (hour < 18) greeting = "Good afternoon";
-    else greeting = "Good evening";
+document.addEventListener("DOMContentLoaded", function () {
+    setCurrentYear();
+    setGreetingMessage();
+    setupAccordion();
+    setupHomeSearch();
+    setupGalleryLightbox();
+    setupServiceSearch();
+    setupServiceUpdate();
+    setupEnquiryForm();
+    setupContactForm();
+});
 
-    const greetEl = document.getElementById("greetingMessage");
-    if (greetEl) {
-        greetEl.textContent = greeting + " to Hundzukani Group.";
-    }
-
+/* ========== FOOTER YEAR ========== */
+function setCurrentYear() {
     const yearSpan = document.getElementById("currentYear");
     if (yearSpan) {
-        yearSpan.textContent = now.getFullYear();
+        yearSpan.textContent = new Date().getFullYear();
     }
-})();
+}
 
-// Accordion behaviour (Home, About, Services)
-(function () {
-    const panels = document.querySelectorAll(".accordion-panel");
+/* ========== HOME PAGE GREETING ========== */
+function setGreetingMessage() {
+    const greeting = document.getElementById("greetingMessage");
+    if (!greeting) return;
+
+    const hour = new Date().getHours();
+    let text = "Welcome";
+
+    if (hour < 12) {
+        text = "Good morning, welcome to Hundzukani Group.";
+    } else if (hour < 18) {
+        text = "Good afternoon, welcome to Hundzukani Group.";
+    } else {
+        text = "Good evening, welcome to Hundzukani Group.";
+    }
+
+    greeting.textContent = text;
+}
+
+/* ========== ACCORDION (HOME, ABOUT, SERVICES) ========== */
+function setupAccordion() {
     const toggles = document.querySelectorAll(".accordion-toggle");
+    if (!toggles.length) return;
 
-    if (!panels.length || !toggles.length) return;
+    toggles.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            const panel = btn.nextElementSibling;
 
-    panels.forEach(panel => {
-        panel.style.display = "none";
-    });
+            // Close any other open panels
+            document.querySelectorAll(".accordion-panel").forEach(function (p) {
+                if (p !== panel) {
+                    p.style.display = "none";
+                }
+            });
+            document.querySelectorAll(".accordion-toggle").forEach(function (b) {
+                if (b !== btn) {
+                    b.setAttribute("aria-expanded", "false");
+                }
+            });
 
-    toggles.forEach(button => {
-        button.addEventListener("click", function () {
-            const panel = this.nextElementSibling;
-            const isOpen = panel.style.display === "block";
-
-            panel.style.display = isOpen ? "none" : "block";
-            this.setAttribute("aria-expanded", (!isOpen).toString());
+            // Toggle this one
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                btn.setAttribute("aria-expanded", "false");
+            } else {
+                panel.style.display = "block";
+                btn.setAttribute("aria-expanded", "true");
+            }
         });
     });
-})();
+}
 
-// Search feature on HOME page
-(function () {
+/* ========== HOME PAGE SEARCH ========== */
+function setupHomeSearch() {
     const input = document.getElementById("siteSearch");
-    const items = document.querySelectorAll("#searchList li");
+    const list = document.getElementById("searchList");
     const noResults = document.getElementById("noResults");
 
-    if (!input || !items.length) return;
+    if (!input || !list) return;
+
+    const items = Array.from(list.querySelectorAll("li"));
 
     input.addEventListener("input", function () {
-        const query = this.value.toLowerCase().trim();
+        const query = input.value.toLowerCase().trim();
         let visibleCount = 0;
 
-        items.forEach(item => {
-            const keywords = item.getAttribute("data-keywords").toLowerCase();
-            const text = item.textContent.toLowerCase();
-
-            if (!query || keywords.includes(query) || text.includes(query)) {
-                item.style.display = "";
+        items.forEach(function (item) {
+            const keywords = (item.getAttribute("data-keywords") || "").toLowerCase();
+            if (!query || keywords.indexOf(query) !== -1) {
+                item.style.display = "list-item";
                 visibleCount++;
             } else {
                 item.style.display = "none";
@@ -69,330 +100,255 @@
             noResults.style.display = visibleCount === 0 ? "block" : "none";
         }
     });
-})();
+}
 
-// Gallery lightbox (Home page)
-(function () {
+/* ========== GALLERY LIGHTBOX (HOME) ========== */
+function setupGalleryLightbox() {
     const images = document.querySelectorAll(".gallery-image");
     const lightbox = document.getElementById("lightbox");
     const lightboxImage = document.getElementById("lightboxImage");
-    const lightboxClose = document.getElementById("lightboxClose");
+    const closeBtn = document.getElementById("lightboxClose");
 
-    if (!images.length || !lightbox || !lightboxImage || !lightboxClose) return;
+    if (!images.length || !lightbox || !lightboxImage || !closeBtn) return;
 
-    images.forEach(img => {
+    images.forEach(function (img) {
         img.addEventListener("click", function () {
-            lightboxImage.src = this.src;
-            lightboxImage.alt = this.alt;
+            lightboxImage.src = img.src;
             lightbox.style.display = "flex";
         });
     });
 
-    lightboxClose.addEventListener("click", function () {
+    closeBtn.addEventListener("click", function () {
         lightbox.style.display = "none";
+        lightboxImage.src = "";
     });
 
+    // Close when clicking outside image
     lightbox.addEventListener("click", function (e) {
         if (e.target === lightbox) {
             lightbox.style.display = "none";
+            lightboxImage.src = "";
         }
     });
-})();
+}
 
-// Service search (Services page)
-(function () {
+/* ========== SERVICES SEARCH ========== */
+function setupServiceSearch() {
     const input = document.getElementById("serviceSearch");
-    const items = document.querySelectorAll("#serviceList li");
+    const list = document.getElementById("serviceList");
     const feedback = document.getElementById("serviceSearchFeedback");
 
-    if (!input || !items.length || !feedback) return;
+    if (!input || !list) return;
+
+    const items = Array.from(list.querySelectorAll("li"));
 
     input.addEventListener("input", function () {
-        const query = this.value.toLowerCase().trim();
+        const query = input.value.toLowerCase().trim();
         let visibleCount = 0;
 
-        items.forEach(item => {
-            const keywords = item.getAttribute("data-keywords").toLowerCase();
-            const text = item.textContent.toLowerCase();
-
-            if (!query || keywords.includes(query) || text.includes(query)) {
-                item.style.display = "";
+        items.forEach(function (item) {
+            const keywords = (item.getAttribute("data-keywords") || "").toLowerCase();
+            if (!query || keywords.indexOf(query) !== -1) {
+                item.style.display = "list-item";
                 visibleCount++;
             } else {
                 item.style.display = "none";
             }
         });
 
-        feedback.style.display = visibleCount === 0 ? "block" : "none";
+        if (feedback) {
+            if (visibleCount === 0 && query) {
+                feedback.textContent = "No services match your search.";
+                feedback.style.display = "block";
+            } else {
+                feedback.textContent = "";
+                feedback.style.display = "none";
+            }
+        }
     });
-})();
+}
 
-// Dynamic service update (Services page – real-time content)
-(function () {
-    const updateElement = document.getElementById("serviceUpdateText");
-    if (!updateElement) return;
+/* ========== DYNAMIC SERVICE UPDATE TEXT ========== */
+function setupServiceUpdate() {
+    const p = document.getElementById("serviceUpdateText");
+    if (!p) return;
 
     const now = new Date();
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const services = [
-        "Cost Consulting",
-        "Project Management",
-        "Contract Administration",
-        "Tender Documentation",
-        "Quality Control"
-    ];
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formatted = now.toLocaleDateString("en-ZA", options);
 
-    const dayName = dayNames[now.getDay()];
-    const highlightedService = services[now.getDay() % services.length];
+    p.textContent = "Service information last reviewed on " + formatted + ".";
+}
 
-    updateElement.textContent =
-        `Today is ${dayName}. We are currently prioritising ${highlightedService} to support active client projects.`;
-})();
-
-// ================================
-// ENQUIRY FORM VALIDATION (LIVE)
-// ================================
-(function () {
+/* ========== ENQUIRY FORM VALIDATION ========== */
+function setupEnquiryForm() {
     const form = document.getElementById("enquiry-form");
-    if (!form) return; // only run on enquiry page
+    if (!form) return;
 
-    const nameInput = document.getElementById("enquiry-name");
-    const emailInput = document.getElementById("enquiry-email");
-    const phoneInput = document.getElementById("enquiry-phone");
-    const subjectInput = document.getElementById("enquiry-subject");
-    const messageInput = document.getElementById("enquiry-message");
     const feedbackBox = document.getElementById("enquiry-feedback");
 
-    const nameError = document.getElementById("enquiry-name-error");
-    const emailError = document.getElementById("enquiry-email-error");
-    const phoneError = document.getElementById("enquiry-phone-error");
-    const subjectError = document.getElementById("enquiry-subject-error");
-    const messageError = document.getElementById("enquiry-message-error");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    function showError(input, errorElement, message) {
-        if (!input || !errorElement) return;
-        errorElement.textContent = message;
-        input.classList.remove("valid");
-        input.classList.add("invalid");
-    }
+        // Inputs
+        const name = document.getElementById("enquiry-name");
+        const email = document.getElementById("enquiry-email");
+        const phone = document.getElementById("enquiry-phone");
+        const subject = document.getElementById("enquiry-subject");
+        const message = document.getElementById("enquiry-message");
 
-    function showSuccess(input, errorElement) {
-        if (!input || !errorElement) return;
-        errorElement.textContent = "";
-        input.classList.remove("invalid");
-        input.classList.add("valid");
-    }
+        // Error <small> elements
+        const nameError = document.getElementById("enquiry-name-error");
+        const emailError = document.getElementById("enquiry-email-error");
+        const phoneError = document.getElementById("enquiry-phone-error");
+        const subjectError = document.getElementById("enquiry-subject-error");
+        const messageError = document.getElementById("enquiry-message-error");
 
-    function validateName() {
-        const value = nameInput.value.trim();
-        if (value.length < 3) {
-            showError(nameInput, nameError, "Name must be at least 3 characters.");
-            return false;
+        let isValid = true;
+
+        // Clear previous errors
+        [nameError, emailError, phoneError, subjectError, messageError].forEach(function (el) {
+            if (el) el.textContent = "";
+        });
+        [name, email, phone, subject, message].forEach(function (input) {
+            if (input) input.classList.remove("input-error");
+        });
+        if (feedbackBox) {
+            feedbackBox.textContent = "";
+            feedbackBox.className = "form-feedback";
         }
-        showSuccess(nameInput, nameError);
-        return true;
-    }
 
-    function validateEmail() {
-        const value = emailInput.value.trim();
+        // Name
+        if (!name.value.trim()) {
+            nameError.textContent = "Please enter your full name.";
+            name.classList.add("input-error");
+            isValid = false;
+        }
+
+        // Email (simple regex)
+        const emailValue = email.value.trim();
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(value)) {
-            showError(emailInput, emailError, "Please enter a valid email address.");
-            return false;
+        if (!emailValue) {
+            emailError.textContent = "Please enter your email address.";
+            email.classList.add("input-error");
+            isValid = false;
+        } else if (!emailPattern.test(emailValue)) {
+            emailError.textContent = "Please enter a valid email address.";
+            email.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(emailInput, emailError);
-        return true;
-    }
 
-    function validatePhone() {
-        const value = phoneInput.value.trim();
-        // Simple SA-style check: 0XXXXXXXXX or +27XXXXXXXXX (9 digits after prefix)
-        const phonePattern = /^(0\d{9}|\+27\d{9})$/;
-
-        if (!phonePattern.test(value)) {
-            showError(
-                phoneInput,
-                phoneError,
-                "Enter a valid SA number (0XXXXXXXXX or +27XXXXXXXXX)."
-            );
-            return false;
+        // Phone (basic SA-style check)
+        const phoneValue = phone.value.trim();
+        const phonePattern = /^(\+27|0)\d{9}$/;
+        if (!phoneValue) {
+            phoneError.textContent = "Please enter your phone number.";
+            phone.classList.add("input-error");
+            isValid = false;
+        } else if (!phonePattern.test(phoneValue)) {
+            phoneError.textContent = "Please use a valid SA number (e.g. 0821234567 or +27821234567).";
+            phone.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(phoneInput, phoneError);
-        return true;
-    }
 
-    function validateSubject() {
-        const value = subjectInput.value.trim();
-        if (value.length < 3) {
-            showError(subjectInput, subjectError, "Subject must be at least 3 characters.");
-            return false;
+        // Subject
+        if (!subject.value.trim()) {
+            subjectError.textContent = "Please enter a subject.";
+            subject.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(subjectInput, subjectError);
-        return true;
-    }
 
-    function validateMessage() {
-        const value = messageInput.value.trim();
-        if (value.length < 10) {
-            showError(
-                messageInput,
-                messageError,
-                "Message must be at least 10 characters so we can assist properly."
-            );
-            return false;
+        // Message
+        if (!message.value.trim()) {
+            messageError.textContent = "Please enter a message.";
+            message.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(messageInput, messageError);
-        return true;
-    }
-    // ================================
-// CONTACT FORM VALIDATION (LIVE)
-// ================================
-(function () {
+
+        if (!isValid) {
+            if (feedbackBox) {
+                feedbackBox.textContent = "Please fix the highlighted fields before submitting.";
+                feedbackBox.classList.add("error");
+            }
+            return;
+        }
+
+        // If valid – show success
+        if (feedbackBox) {
+            feedbackBox.textContent = "Thank you! Your enquiry has been submitted successfully.";
+            feedbackBox.classList.add("success");
+        }
+        alert("Enquiry submitted successfully!");
+
+        form.reset();
+    });
+}
+
+/* ========== CONTACT FORM VALIDATION ========== */
+function setupContactForm() {
     const form = document.getElementById("contact-form");
-    if (!form) return; // only run on contact page
+    if (!form) return;
 
-    const nameInput = document.getElementById("contact-name");
-    const emailInput = document.getElementById("contact-email");
-    const messageInput = document.getElementById("contact-message");
     const feedbackBox = document.getElementById("contact-feedback");
+    const recipientDisplay = document.getElementById("recipient-display");
+    const primaryRecipientLink = document.getElementById("primary-recipient");
 
-    const nameError = document.getElementById("contact-name-error");
-    const emailError = document.getElementById("contact-email-error");
-    const messageError = document.getElementById("contact-message-error");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    function showError(input, errorElement, message) {
-        if (!input || !errorElement) return;
-        errorElement.textContent = message;
-        input.classList.remove("valid");
-        input.classList.add("invalid");
-    }
+        const name = document.getElementById("contact-name");
+        const email = document.getElementById("contact-email");
+        const message = document.getElementById("contact-message");
 
-    function showSuccess(input, errorElement) {
-        if (!input || !errorElement) return;
-        errorElement.textContent = "";
-        input.classList.remove("invalid");
-        input.classList.add("valid");
-    }
+        let isValid = true;
 
-    function validateName() {
-        const value = nameInput.value.trim();
-        if (value.length < 3) {
-            showError(nameInput, nameError, "Name must be at least 3 characters.");
-            return false;
+        if (feedbackBox) {
+            feedbackBox.textContent = "";
+            feedbackBox.className = "form-feedback";
         }
-        showSuccess(nameInput, nameError);
-        return true;
-    }
+        [name, email, message].forEach(function (input) {
+            if (input) input.classList.remove("input-error");
+        });
 
-    function validateEmail() {
-        const value = emailInput.value.trim();
+        // Name
+        if (!name.value.trim()) {
+            name.classList.add("input-error");
+            isValid = false;
+        }
+
+        // Email
+        const emailValue = email.value.trim();
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(value)) {
-            showError(emailInput, emailError, "Please enter a valid email address.");
-            return false;
+        if (!emailValue || !emailPattern.test(emailValue)) {
+            email.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(emailInput, emailError);
-        return true;
-    }
 
-    function validateMessage() {
-        const value = messageInput.value.trim();
-        if (value.length < 10) {
-            showError(
-                messageInput,
-                messageError,
-                "Message must be at least 10 characters so we can assist properly."
-            );
-            return false;
+        // Message
+        if (!message.value.trim()) {
+            message.classList.add("input-error");
+            isValid = false;
         }
-        showSuccess(messageInput, messageError);
-        return true;
-    }
 
-    // Live feedback
-    nameInput.addEventListener("input", validateName);
-    emailInput.addEventListener("input", validateEmail);
-    messageInput.addEventListener("input", validateMessage);
-
-    nameInput.addEventListener("blur", validateName);
-    emailInput.addEventListener("blur", validateEmail);
-    messageInput.addEventListener("blur", validateMessage);
-
-    // Submit handler
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const isNameValid = validateName();
-        const isEmailValid = validateEmail();
-        const isMessageValid = validateMessage();
-
-        if (isNameValid && isEmailValid && isMessageValid) {
-            feedbackBox.textContent = "Thank you for contacting us. We will respond shortly.";
-            feedbackBox.className = "form-feedback success";
-
-            form.reset();
-            [nameInput, emailInput, messageInput].forEach(input => {
-                input.classList.remove("valid", "invalid");
-            });
-        } else {
-            feedbackBox.textContent = "Please fix the highlighted fields before submitting.";
-            feedbackBox.className = "form-feedback error";
+        if (!isValid) {
+            if (feedbackBox) {
+                feedbackBox.textContent = "Please complete all required fields correctly.";
+                feedbackBox.classList.add("error");
+            }
+            return;
         }
+
+        // Simulate routing to primary recipient
+        if (recipientDisplay && primaryRecipientLink) {
+            recipientDisplay.textContent = primaryRecipientLink.textContent.trim();
+        }
+
+        if (feedbackBox) {
+            feedbackBox.textContent = "Thank you! Your message has been sent to our primary recipient.";
+            feedbackBox.classList.add("success");
+        }
+        alert("Contact form submitted successfully!");
+
+        form.reset();
     });
-})();
-
-// ================================
-// CONTACT – RECIPIENT DISPLAY
-// (syncs span with mailto link)
-// ================================
-(function () {
-    const link = document.getElementById("primary-recipient");
-    const displaySpan = document.getElementById("recipient-display");
-
-    if (!link || !displaySpan) return;
-
-    const emailText = link.textContent.trim();
-    displaySpan.textContent = emailText;
-})();
-
-
-    // Live feedback
-    nameInput.addEventListener("input", validateName);
-    emailInput.addEventListener("input", validateEmail);
-    phoneInput.addEventListener("input", validatePhone);
-    subjectInput.addEventListener("input", validateSubject);
-    messageInput.addEventListener("input", validateMessage);
-
-    nameInput.addEventListener("blur", validateName);
-    emailInput.addEventListener("blur", validateEmail);
-    phoneInput.addEventListener("blur", validatePhone);
-    subjectInput.addEventListener("blur", validateSubject);
-    messageInput.addEventListener("blur", validateMessage);
-
-    // Final submit validation
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const isNameValid = validateName();
-        const isEmailValid = validateEmail();
-        const isPhoneValid = validatePhone();
-        const isSubjectValid = validateSubject();
-        const isMessageValid = validateMessage();
-
-        if (isNameValid && isEmailValid && isPhoneValid && isSubjectValid && isMessageValid) {
-            feedbackBox.textContent = "Thank you! Your enquiry has been received.";
-            feedbackBox.className = "form-feedback success";
-
-            // Front-end only: reset the form
-            form.reset();
-            [nameInput, emailInput, phoneInput, subjectInput, messageInput].forEach(input => {
-                input.classList.remove("valid", "invalid");
-            });
-        } else {
-            feedbackBox.textContent = "Please fix the highlighted fields before submitting.";
-            feedbackBox.className = "form-feedback error";
-        }
-    });
-})();
+}
