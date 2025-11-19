@@ -64,6 +64,37 @@
 
 ---
 
+🔧 Part 3 Updates (Enhancements Added)
+
+- Added a JavaScript file named (validate.js)
+
+- JavaScript Form Validation – added full live validation for Enquiry and Contact forms
+
+- Success Popups – both forms now show a popup message when submitted successfully
+
+- Dynamic Greeting Message – Home page greeting changes based on time of day
+
+- Search Functionality (Home Page) – added instant live search filtering
+
+- Services Search – added service-specific search bar with dynamic feedback
+
+- Updated Services “Last Reviewed” Date – automatically displays updated date using JavaScript
+
+- Gallery Lightbox – all gallery images open in a centered popup viewer
+
+- Accordion System – added expanding/collapsing accordion sections on multiple pages
+
+- Improved Responsiveness – ensured layout, header, nav, forms, map, and images adapt correctly on smaller screens
+
+- Equal Image Dimensions – gallery and team images automatically resize uniformly
+
+- Centralised JavaScript File (validate.js) – all interactive functions moved into a single shared JS file
+
+- Improved Error Feedback – form error messages styled and displayed clearly
+
+- Accessibility Enhancements – ARIA labels, readable form errors, and keyboard-friendly navigation
+
+- Code Cleanup & Consistency – aligned file paths, folder structure, and CSS across all pages
 
 ## 👤 Author
 **Mbuyelo Nkuna**  
