@@ -121,3 +121,51 @@
 
 ### Notes
 - Project now fully polished with consistent design across all pages.
+
+[v2.0.0] – 10-11-2025
+
+### Added
+
+Full JavaScript validation for Enquiry and Contact forms (/js/validate.js)
+
+Real-time success popup alerts on all form submissions
+
+Dynamic greeting message on Home page (time-based: morning/afternoon/evening)
+
+Dynamic Services update showing the last reviewed date
+
+Live search filtering on Home page with no-results feedback
+
+Services page live search using keyword matching
+
+Image lightbox gallery for viewing Home page images in a popup
+
+Centralised all JavaScript into a single file (validate.js)
+
+### Improved
+
+Accordion behaviour across pages (only one panel open at a time)
+
+Responsive design across Home, About, Services, Enquiry, and Contact pages
+
+Standardised image dimensions for gallery and About team members
+
+Form styling, spacing, labels, and error messages for clarity and accessibility
+
+Footer year now updates automatically across all pages
+
+Cleaned navigation spacing, section padding, and layout alignment
+
+### Fixed
+
+Form submission events not triggering popups
+
+Placeholder errors and missing inputs not being validated
+
+Missing IDs and mismatched DOM selectors that prevented JS functions from running
+
+### Notes
+
+This release completes Part 3 POE requirements: JavaScript validation, interactivity, responsiveness, improved UX, and dynamic content.
+
+All pages now follow a consistent structure and styling system (CSS + JS).
