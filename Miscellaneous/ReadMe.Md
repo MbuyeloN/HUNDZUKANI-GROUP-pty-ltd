@@ -17,7 +17,8 @@
 ## 🛠️ Technologies Used
 - **HTML5** – semantic structure and content organization  
 - **CSS3** – styling, layout, and responsive design  
-- **Media** – images, video, and Google Maps iframe  
+- **Media** – images, video, and Google Maps iframe 
+- **JavaScript** – interactive behaviour, validation, search, and popups 
 - **Version Control** – tracked progress and changes with dated logs  
 
 ---
@@ -48,12 +49,46 @@
 
 ---
 
-## 🔮 Future Improvements
-- Add **form validation** with JavaScript  
-- Connect forms to a backend for **real enquiry submissions**  
-- Improve **SEO optimization** (meta tags, keywords)  
-- Expand media content (photo gallery or testimonial section)  
-- Apply a **mobile-first design approach** for enhanced responsiveness  
+## 🔧 Part 3 Updates (Enhancements Added)
+
+- Added a dedicated JavaScript file (validate.js) for all interactivity and form logic
+
+- JavaScript Form Validation – full real-time validation for both Enquiry and Contact forms
+
+- Success Pop-ups – confirmation alert appears after valid form submission
+
+- Dynamic Greeting Message – Home page greeting changes automatically based on time of day
+
+- Home Page Live Search – instant filtering of items as the user types
+
+- Services Page Search – added service-specific keyword search with dynamic feedback
+
+- Automatic “Last Reviewed” Date – Services page displays a real-time updated review date
+
+- Gallery Lightbox – gallery images open in a centered popup viewer
+
+- Accordion System – collapsible sections added across Home, About, and Services pages
+
+- mproved Mobile Responsiveness – header, navigation, images, forms, and map scale correctly on all devices
+
+- Uniform Image Dimensions – team and gallery images now resize evenly using CSS object-fit
+
+- Centralised JavaScript Architecture – all interactive functions stored in one shared JS file
+
+- Enhanced Error Feedback – clearer validation messages and red/green visual cues
+
+- Accessibility Improvements – ARIA labels, screen-reader text, keyboard-friendly behaviour
+
+- General Code Cleanup – consistent folder paths, tidy CSS, and refined HTML structure
+
+---
+
+## 🔮 Improvements
+- Added **form validation** with JavaScript  
+- Connected forms to a backend for **real enquiry submissions**  
+- Improved **SEO optimization** (meta tags, keywords)  
+- Expanded media content (photo gallery or testimonial section)  
+- Applied a **mobile-first design approach** for enhanced responsiveness  
 
 ---
 
@@ -63,38 +98,6 @@
 - Class peers for feedback during development  
 
 ---
-
-🔧 Part 3 Updates (Enhancements Added)
-
-- Added a JavaScript file named (validate.js)
-
-- JavaScript Form Validation – added full live validation for Enquiry and Contact forms
-
-- Success Popups – both forms now show a popup message when submitted successfully
-
-- Dynamic Greeting Message – Home page greeting changes based on time of day
-
-- Search Functionality (Home Page) – added instant live search filtering
-
-- Services Search – added service-specific search bar with dynamic feedback
-
-- Updated Services “Last Reviewed” Date – automatically displays updated date using JavaScript
-
-- Gallery Lightbox – all gallery images open in a centered popup viewer
-
-- Accordion System – added expanding/collapsing accordion sections on multiple pages
-
-- Improved Responsiveness – ensured layout, header, nav, forms, map, and images adapt correctly on smaller screens
-
-- Equal Image Dimensions – gallery and team images automatically resize uniformly
-
-- Centralised JavaScript File (validate.js) – all interactive functions moved into a single shared JS file
-
-- Improved Error Feedback – form error messages styled and displayed clearly
-
-- Accessibility Enhancements – ARIA labels, readable form errors, and keyboard-friendly navigation
-
-- Code Cleanup & Consistency – aligned file paths, folder structure, and CSS across all pages
 
 ## 👤 Author
 **Mbuyelo Nkuna**  
@@ -112,4 +115,16 @@ W3C (no date) *CSS Specifications*. Available at: https://www.w3.org/TR/CSS/#css
 Google Developers (no date) *Maps Embed API Documentation*. Google. Available at: https://developers.google.com/maps/documentation/embed (Accessed: 26 September 2025).  
 
 Font Awesome (no date) *Free Icons*. Available at: https://fontawesome.com/icons (Accessed: 26 September 2025).  
+
+JavaScript.info (no date) *The Modern JavaScript Tutorial*. Available at: https://javascript.info/
+ (Accessed: 26 September 2025).
+
+MDN Web Docs (no date) *JavaScript Guide. Mozilla*. Available at: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide
+ (Accessed: 26 September 2025).
+
+MDN Web Docs (no date) *Client-side form validation. Mozilla*. Available at: https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation
+ (Accessed: 26 September 2025).
+
+MDN Web Docs (no date) *Document Object Model (DOM). Mozilla*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+ (Accessed: 26 September 2025).
 
