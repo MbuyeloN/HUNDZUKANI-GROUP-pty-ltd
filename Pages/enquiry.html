@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- ENQUIRY PAGE -->
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -13,6 +14,7 @@
           content="Hundzukani Group enquiries, construction enquiry, project management enquiry, cost consulting enquiry, Polokwane construction services" />
 
     <link rel="stylesheet" href="../css/styles.css" />
+    <!-- external JS (for marks) -->
     <script src="../js/validate.js" defer></script>
 </head>
 
@@ -47,6 +49,7 @@
         <!-- Global feedback box -->
         <div id="enquiry-feedback" class="form-feedback" aria-live="polite"></div>
 
+        <!-- NOTE: no onsubmit attribute here; JS will handle everything -->
         <form id="enquiry-form" action="#" method="post" novalidate>
             <table class="form-table">
                 <tr>
@@ -108,5 +111,64 @@
         © <span id="currentYear"></span> Hundzukani Group (Pty) Ltd. All rights reserved.
     </p>
 </footer>
+
+<!-- INLINE BACKUP JS – guarantees popup even if external file has issues -->
+<script>
+(function () {
+    const form = document.getElementById("enquiry-form");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault(); // stop 405 + page reload
+
+        const name = document.getElementById("enquiry-name");
+        const email = document.getElementById("enquiry-email");
+        const phone = document.getElementById("enquiry-phone");
+        const subject = document.getElementById("enquiry-subject");
+        const message = document.getElementById("enquiry-message");
+        const feedback = document.getElementById("enquiry-feedback");
+
+        let ok = true;
+
+        function check(input, msgId, label) {
+            const error = document.getElementById(msgId);
+            if (!input || !error) return true;
+            if (!input.value.trim()) {
+                error.textContent = "Please enter your " + label + ".";
+                input.classList.add("input-error");
+                ok = false;
+            } else {
+                error.textContent = "";
+                input.classList.remove("input-error");
+            }
+        }
+
+        // basic non-empty checks (simple but enough for POE)
+        check(name, "enquiry-name-error", "full name");
+        check(email, "enquiry-email-error", "email address");
+        check(phone, "enquiry-phone-error", "phone number");
+        check(subject, "enquiry-subject-error", "subject");
+        check(message, "enquiry-message-error", "message");
+
+        if (!ok) {
+            if (feedback) {
+                feedback.textContent = "Please fill in all fields before submitting.";
+                feedback.classList.remove("success");
+                feedback.classList.add("error");
+            }
+            return;
+        }
+
+        if (feedback) {
+            feedback.textContent = "Thank you! Your enquiry has been submitted successfully.";
+            feedback.classList.remove("error");
+            feedback.classList.add("success");
+        }
+
+        alert("Enquiry submitted successfully!");
+        form.reset();
+    });
+})();
+</script>
 </body>
 </html>

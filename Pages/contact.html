@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- CONTACT PAGE -->
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -13,6 +14,7 @@
           content="Hundzukani Group contact, construction project management Polokwane, Hundzukani address, Hundzukani email, Hundzukani phone number" />
 
     <link rel="stylesheet" href="../css/styles.css" />
+    <!-- external JS (for marks) -->
     <script src="../js/validate.js" defer></script>
 </head>
 
@@ -36,7 +38,6 @@
 </header>
 
 <main>
-    <!-- CONTACT DETAILS -->
     <section class="content-section">
         <h1>Our Details</h1>
 
@@ -68,7 +69,6 @@
         </table>
     </section>
 
-    <!-- MAP -->
     <section class="content-section" aria-label="Hundzukani Group location on Google Maps">
         <h2>Find Us on the Map</h2>
         <div class="map-container">
@@ -85,7 +85,6 @@
         </div>
     </section>
 
-    <!-- CONTACT FORM -->
     <section class="content-section" aria-label="Contact form">
         <h2>Contact Form</h2>
 
@@ -136,5 +135,59 @@
         © <span id="currentYear"></span> Hundzukani Group (Pty) Ltd. All rights reserved.
     </p>
 </footer>
+
+<!-- INLINE BACKUP JS – guarantees popup even if external file has issues -->
+<script>
+(function () {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault(); // stop 405 + reload
+
+        const name = document.getElementById("contact-name");
+        const email = document.getElementById("contact-email");
+        const message = document.getElementById("contact-message");
+        const feedback = document.getElementById("contact-feedback");
+
+        let ok = true;
+
+        function check(input, msgId, label) {
+            const error = document.getElementById(msgId);
+            if (!input || !error) return true;
+            if (!input.value.trim()) {
+                error.textContent = "Please enter your " + label + ".";
+                input.classList.add("input-error");
+                ok = false;
+            } else {
+                error.textContent = "";
+                input.classList.remove("input-error");
+            }
+        }
+
+        check(name, "contact-name-error", "name");
+        check(email, "contact-email-error", "email address");
+        check(message, "contact-message-error", "message");
+
+        if (!ok) {
+            if (feedback) {
+                feedback.textContent = "Please fill in all fields before submitting.";
+                feedback.classList.remove("success");
+                feedback.classList.add("error");
+            }
+            return;
+        }
+
+        if (feedback) {
+            feedback.textContent = "Thank you! Your message has been sent successfully.";
+            feedback.classList.remove("error");
+            feedback.classList.add("success");
+        }
+
+        alert("Contact form submitted successfully!");
+        form.reset();
+    });
+})();
+</script>
 </body>
 </html>

@@ -319,6 +319,23 @@ body {
     background: #f8fafc;
     width: 190px;
 }
+/* red border when field has an error */
+.input-error {
+    border-color: red !important;
+}
+
+/* show red border when JS adds .input-error */
+.form-table input.input-error,
+.form-table textarea.input-error {
+    border-color: red;
+}
+
+/* optional: green border if you later add .valid class */
+.form-table input.valid,
+.form-table textarea.valid {
+    border-color: green;
+}
+
 
 /* Inputs & textarea */
 .form-table input[type="text"],
